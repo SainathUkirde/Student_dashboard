@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎓 Student Academic Dashboard
 
 A **production-quality full-stack Student Academic Management Dashboard** for a TY B.Tech Data Science student.
@@ -266,3 +267,6 @@ Serve the built frontend statically from the Express backend (add `express.stati
 ---
 
 *Built as an academic dashboard project. TY B.Tech Data Science · AY 2026–2027*
+=======
+# Student_dashboard
+>>>>>>> b9107d27a57853699401821f3643ff6af4457cb6
