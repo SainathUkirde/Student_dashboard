@@ -1,0 +1,21 @@
+services:
+  # ---------- Backend ----------
+  - type: web
+    name: student-dashboard-backend
+    env: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+    # Add any other secrets (DB path, JWT secret, etc.) here.
+
+  # ---------- Frontend ----------
+  - type: static
+    name: student-dashboard-frontend
+    staticPublishPath: frontend/dist
+    buildCommand: |
+      cd frontend && npm ci && npm run build
+    # No startCommand for static sites
+
