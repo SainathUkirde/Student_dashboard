@@ -1,10 +1,9 @@
 const { getDb } = require('../database/db');
 
-const db = getDb();
-
 // GET /api/settings
 const getSettings = (req, res) => {
   try {
+    const db = getDb();
     const rows = db.prepare('SELECT * FROM settings').all();
     const settings = {};
     rows.forEach(r => { settings[r.key] = r.value; });
@@ -17,6 +16,7 @@ const getSettings = (req, res) => {
 // PUT /api/settings/:key
 const updateSetting = (req, res) => {
   try {
+    const db = getDb();
     const { key } = req.params;
     const { value } = req.body;
     if (!value) return res.status(400).json({ error: 'Value is required' });

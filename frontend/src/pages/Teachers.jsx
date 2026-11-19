@@ -1,71 +1,94 @@
 import React from 'react';
-import { Users, BookOpen } from 'lucide-react';
+import { Users, BookOpen, Linkedin } from 'lucide-react';
 import ErrorState from '../components/ErrorState';
 import EmptyState from '../components/EmptyState';
 import { SkeletonGrid, SkeletonCard } from '../components/LoadingSkeleton';
+import TeacherAvatar from '../components/TeacherAvatar';
 import useFetch from '../hooks/useFetch';
 import { teachersAPI } from '../services/api';
 
 const TEACHER_COLORS = [
-  { bg: 'linear-gradient(135deg, #4f46e5, #7c3aed)', color: '#4f46e5', light: '#eef2ff' },
-  { bg: 'linear-gradient(135deg, #0891b2, #06b6d4)', color: '#0891b2', light: '#ecfeff' },
-  { bg: 'linear-gradient(135deg, #16a34a, #4ade80)', color: '#16a34a', light: '#f0fdf4' },
-  { bg: 'linear-gradient(135deg, #d97706, #f59e0b)', color: '#d97706', light: '#fffbeb' },
-  { bg: 'linear-gradient(135deg, #e11d48, #f43f5e)', color: '#e11d48', light: '#fff1f2' },
+  { bg: 'linear-gradient(135deg, #4338ca, #7c3aed)', color: '#4338ca', light: '#eef2ff' },
+  { bg: 'linear-gradient(135deg, #0e7490, #06b6d4)', color: '#0e7490', light: '#ecfeff' },
+  { bg: 'linear-gradient(135deg, #15803d, #4ade80)', color: '#15803d', light: '#f0fdf4' },
+  { bg: 'linear-gradient(135deg, #b45309, #f59e0b)', color: '#b45309', light: '#fffbeb' },
+  { bg: 'linear-gradient(135deg, #be185d, #f43f5e)', color: '#be185d', light: '#fdf2f8' },
 ];
 
 function TeacherCard({ teacher, colorIdx }) {
   const tc = TEACHER_COLORS[colorIdx % TEACHER_COLORS.length];
-  const initials = teacher.name.split(' ').map(n => n[0]).join('').toUpperCase();
 
   return (
     <div className="card card-interactive" style={{ textAlign: 'center', padding: '24px 18px' }}>
       {/* Avatar */}
-      <div style={{
-        width: 72, height: 72, borderRadius: '50%',
-        background: tc.bg,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        margin: '0 auto 14px',
-        fontSize: 22, fontWeight: 800, color: '#fff',
-        boxShadow: `0 4px 14px ${tc.color}40`
-      }}>
-        {initials}
+      <div style={{ margin: '0 auto 14px', width: 68 }}>
+        <TeacherAvatar
+          name={teacher.name}
+          photoUrl={teacher.photo_url || undefined}
+          size={68}
+          fontSize={20}
+          gradient={tc.bg}
+          borderColor={tc.light}
+          boxShadow={`0 6px 20px ${tc.color}35`}
+        />
       </div>
 
       {/* Name */}
-      <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>
+      <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 15.5, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 4, letterSpacing: '-0.01em' }}>
         {teacher.name}
       </div>
 
+      {/* LinkedIn */}
+      {teacher.linkedin_url && (
+        <a
+          href={teacher.linkedin_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={e => e.stopPropagation()}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 4,
+            fontSize: 12, fontWeight: 600, color: '#0a66c2',
+            textDecoration: 'none', marginBottom: 6,
+          }}
+        >
+          <Linkedin size={12} />
+          LinkedIn
+        </a>
+      )}
+
       {/* Designation */}
-      <div style={{ fontSize: 12.5, color: 'var(--text-muted)', marginBottom: 12 }}>
-        {teacher.designation} &nbsp;•&nbsp; {teacher.department}
+      <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12, lineHeight: 1.4 }}>
+        {teacher.designation}
+        {teacher.department && <> &nbsp;·&nbsp; <span style={{ color: tc.color }}>{teacher.department}</span></>}
       </div>
 
       {/* Abbreviation badge */}
       <span style={{
         display: 'inline-block',
-        padding: '3px 10px', borderRadius: 20,
+        padding: '3px 11px', borderRadius: 20,
         background: tc.light, color: tc.color,
-        fontSize: 12, fontWeight: 700, marginBottom: 14,
-        border: `1px solid ${tc.color}30`
+        fontSize: 11.5, fontWeight: 800, marginBottom: 14,
+        border: `1.5px solid ${tc.color}35`,
+        letterSpacing: '0.03em',
       }}>
         {teacher.abbreviation}
       </span>
 
       {/* Courses taught */}
-      <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: 12 }}>
-        <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+      <div style={{ borderTop: '1.5px solid var(--border-color)', paddingTop: 12 }}>
+        <div style={{ fontSize: 10.5, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
           Teaching
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           {teacher.courses?.length ? teacher.courses.map((c, i) => (
             <div key={i} style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              padding: '5px 10px', borderRadius: 8, background: 'var(--bg-surface)',
-              fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)'
+              display: 'flex', alignItems: 'center', gap: 7,
+              padding: '6px 10px', borderRadius: 8,
+              background: tc.light,
+              fontSize: 12, fontWeight: 600, color: tc.color,
+              border: `1px solid ${tc.color}20`,
             }}>
-              <BookOpen size={12} color={tc.color} />
+              <BookOpen size={11} color={tc.color} />
               {c}
             </div>
           )) : (
@@ -76,15 +99,6 @@ function TeacherCard({ teacher, colorIdx }) {
     </div>
   );
 }
-
-// Dashboard teachers (5 primary course teachers shown prominently)
-const DASHBOARD_TEACHERS = [
-  { abbr: 'AK', name: 'Aparna Kulkarni', course: 'Full Stack', role: 'Class Coordinator' },
-  { abbr: 'RD', name: 'Ritu Dudhmal', course: 'Design and Analysis of Algorithms', role: '' },
-  { abbr: 'PV', name: 'Pankaj Vishwakarma', course: 'Agentic AI Foundation', role: '' },
-  { abbr: 'VW', name: 'Vaishali Wangikar', course: 'Deep Learning & LLM', role: '' },
-  { abbr: 'SK', name: 'Sayali Kalbhor', course: 'MDM', role: '' },
-];
 
 function Teachers() {
   const { data: teachers, loading, error, refetch } = useFetch(teachersAPI.getAll);
@@ -107,6 +121,8 @@ function Teachers() {
 
   const otherTeachers = teachers.filter(t => !primaryAbbrs.includes(t.abbreviation));
 
+  const akTeacher = primaryTeachers.find(t => t.abbreviation === 'AK');
+
   return (
     <div>
       <div className="page-header">
@@ -121,27 +137,28 @@ function Teachers() {
       </div>
 
       {/* Class Coordinator Spotlight */}
-      {primaryTeachers.find(t => t.abbreviation === 'AK') && (
+      {akTeacher && (
         <div className="card" style={{
           marginBottom: 24,
           background: 'linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%)',
-          border: '1px solid #c7d2fe',
-          padding: '20px 24px'
+          border: '1.5px solid #c7d2fe',
+          padding: '18px 22px',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-            <div style={{
-              width: 56, height: 56, borderRadius: '50%',
-              background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 18, fontWeight: 800, color: '#fff', flexShrink: 0
-            }}>
-              AK
-            </div>
+            <TeacherAvatar
+              name={akTeacher.name}
+              photoUrl={akTeacher.photo_url || undefined}
+              size={52}
+              fontSize={16}
+              gradient="linear-gradient(135deg, #4338ca, #7c3aed)"
+              borderColor="#eef2ff"
+              boxShadow="0 4px 14px rgba(67,56,202,0.3)"
+            />
             <div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: '#4f46e5' }}>Aparna Kulkarni</div>
-              <div style={{ fontSize: 13, color: '#6366f1', marginTop: 2 }}>Class Coordinator — TY B.Tech Data Science Division A</div>
+              <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 15.5, fontWeight: 800, color: '#4338ca', letterSpacing: '-0.01em' }}>Aparna Kulkarni</div>
+              <div style={{ fontSize: 12.5, color: '#6366f1', marginTop: 3 }}>Class Coordinator — TY B.Tech Data Science Division A</div>
             </div>
-            <span className="badge" style={{ background: '#4f46e5', color: '#fff', marginLeft: 'auto' }}>
+            <span className="badge" style={{ background: '#4338ca', color: '#fff', marginLeft: 'auto', letterSpacing: '0.03em' }}>
               Class Coordinator
             </span>
           </div>
@@ -186,14 +203,15 @@ function Teachers() {
                 <tr key={t.id}>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{
-                        width: 30, height: 30, borderRadius: '50%',
-                        background: TEACHER_COLORS[i % TEACHER_COLORS.length].bg,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 11, fontWeight: 800, color: '#fff', flexShrink: 0
-                      }}>
-                        {t.abbreviation}
-                      </div>
+                      <TeacherAvatar
+                        name={t.name}
+                        photoUrl={t.photo_url || undefined}
+                        size={30}
+                        fontSize={11}
+                        gradient={TEACHER_COLORS[i % TEACHER_COLORS.length].bg}
+                        borderColor={TEACHER_COLORS[i % TEACHER_COLORS.length].light}
+                        boxShadow="none"
+                      />
                       <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{t.name}</span>
                     </div>
                   </td>

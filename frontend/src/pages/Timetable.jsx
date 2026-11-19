@@ -33,13 +33,24 @@ function Timetable() {
         </div>
       </div>
 
-      <div className="card" style={{ padding: 16, textAlign: 'center' }}>
-        <img
-          src={timetableImg}
-          alt="Class Wise Time Table"
-          style={{ maxWidth: '100%', height: 'auto', borderRadius: 8, cursor: 'pointer' }}
+      <div className="card" style={{ padding: '14px 14px 10px', textAlign: 'center', overflow: 'hidden' }}>
+        <div style={{
+          background: 'var(--bg-surface)', borderRadius: 10, overflow: 'hidden',
+          border: '1.5px solid var(--border-color)',
+          cursor: 'pointer', transition: 'box-shadow 0.2s ease',
+        }}
           onClick={handleOpen}
-        />
+          title="Click to open full size"
+        >
+          <img
+            src={timetableImg}
+            alt="Class Wise Time Table"
+            style={{ maxWidth: '100%', height: 'auto', display: 'block' }}
+          />
+        </div>
+        <div style={{ marginTop: 10, fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
+          Click image to open full size · Right-click to save
+        </div>
       </div>
     </div>
   );

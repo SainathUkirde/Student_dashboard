@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, BookOpen, BarChart2, Award, User,
-  Users, Calendar, ChevronLeft, ChevronRight, GraduationCap, PenSquare
+  Users, Calendar, ChevronLeft, ChevronRight, PenSquare
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -27,11 +27,11 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
       <aside className={`sidebar ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'mobile-open' : ''}`}>
         {/* Logo */}
         <div className="sidebar-logo">
-          <div className="sidebar-logo-icon">
-            <GraduationCap size={20} color="#fff" />
+          <div className="sidebar-logo-icon" style={{ background: 'transparent', padding: 0, overflow: 'hidden' }}>
+            <img src="/mit-logo.svg" alt="MIT Academy of Engineering" style={{ width: 36, height: 36, objectFit: 'contain', borderRadius: 8 }} />
           </div>
           <div className="sidebar-logo-text">
-            <span className="sidebar-logo-title">EduPortal</span>
+            <span className="sidebar-logo-title" style={{ fontSize: 12, lineHeight: 1.25 }}>Mitaoe Student Dashboard</span>
             <span className="sidebar-logo-sub">TY B.Tech DS</span>
           </div>
         </div>

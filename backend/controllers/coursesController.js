@@ -1,8 +1,7 @@
 const { getDb } = require('../database/db');
 
-const db = getDb();
-
 function getStudentId() {
+  const db = getDb();
   const row = db.prepare('SELECT id FROM students ORDER BY id LIMIT 1').get();
   return row ? row.id : 1;
 }
@@ -10,6 +9,7 @@ function getStudentId() {
 // GET /api/courses
 const getCourses = (req, res) => {
   try {
+    const db = getDb();
     const studentId = getStudentId();
     const courses = db.prepare(`
       SELECT c.*, t.name as teacher_name, t.abbreviation as teacher_abbr, t.designation as teacher_designation,
@@ -30,6 +30,7 @@ const getCourses = (req, res) => {
 // GET /api/courses/:id
 const getCourseById = (req, res) => {
   try {
+    const db = getDb();
     const studentId = getStudentId();
     const course = db.prepare(`
       SELECT c.*, t.name as teacher_name, t.abbreviation as teacher_abbr, t.designation as teacher_designation,

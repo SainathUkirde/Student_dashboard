@@ -9,11 +9,11 @@ import useFetch from '../hooks/useFetch';
 import { coursesAPI } from '../services/api';
 
 const COURSE_ICONS = {
-  FS: { icon: Code2, bg: '#eef2ff', color: '#4f46e5' },
-  DAA: { icon: Cpu, bg: '#fff1f2', color: '#e11d48' },
-  AgAI: { icon: Brain, bg: '#f0fdf4', color: '#16a34a' },
-  DL: { icon: Layers, bg: '#ecfeff', color: '#0891b2' },
-  MDM: { icon: Database, bg: '#fffbeb', color: '#d97706' },
+  FS:   { icon: Code2,    bg: '#eef2ff', color: '#4338ca' },
+  DAA:  { icon: Cpu,      bg: '#fdf2f8', color: '#be185d' },
+  AgAI: { icon: Brain,    bg: '#f0fdf4', color: '#15803d' },
+  DL:   { icon: Layers,   bg: '#ecfeff', color: '#0e7490' },
+  MDM:  { icon: Database, bg: '#fffbeb', color: '#b45309' },
 };
 
 const DEFAULT_ICON = { icon: BookOpen, bg: '#f5f3ff', color: '#7c3aed' };
@@ -26,47 +26,49 @@ function CourseCard({ course, onViewDetails }) {
 
   return (
     <div className="course-card">
+      {/* top accent strip matching course color */}
+      <div style={{ height: 3, background: color, borderRadius: '4px 4px 0 0', margin: '-20px -20px 0', marginBottom: 16, opacity: 0.7 }} />
+
       <div className="course-card-header">
-        <div className="course-icon" style={{ background: bg }}>
-          <Icon size={22} color={color} />
+        <div className="course-icon" style={{ background: bg, boxShadow: `0 2px 8px ${color}25` }}>
+          <Icon size={20} color={color} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="course-name">{course.course_name}</div>
           <div className="course-teacher">{course.teacher_name}</div>
         </div>
-        <span className="badge badge-accent" style={{ alignSelf: 'flex-start', fontSize: 11 }}>
+        <span className="badge" style={{ background: bg, color, border: `1px solid ${color}30`, alignSelf: 'flex-start', fontSize: 10.5 }}>
           {course.abbreviation}
         </span>
       </div>
 
       {/* Type & Credits */}
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
         <span className="badge badge-info">{course.course_type}</span>
-        <span className="badge" style={{ background: 'var(--bg-surface)', color: 'var(--text-muted)' }}>
-          {course.credits} Credits
+        <span className="badge" style={{ background: 'var(--bg-surface)', color: 'var(--text-muted)', border: '1px solid var(--border-color)' }}>
+          {course.credits} cr
         </span>
       </div>
 
       {/* Attendance */}
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span style={{ fontSize: 12.5, color: 'var(--text-muted)' }}>Attendance</span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: statusColor }}>{pct}%</span>
+      <div style={{ background: 'var(--bg-surface)', borderRadius: 10, padding: '12px 14px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+          <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Attendance</span>
+          <span style={{ fontSize: 14, fontWeight: 800, color: statusColor, fontFamily: 'Manrope, Inter, sans-serif' }}>{pct}%</span>
         </div>
-        <ProgressBar value={pct} status={status} />
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-            {course.classes_attended ?? '–'} / {course.total_classes ?? '–'} attended
-          </span>
+        <ProgressBar value={pct} status={status} height={7} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 7, fontSize: 11, color: 'var(--text-muted)' }}>
+          <span>{course.classes_attended ?? '–'} attended</span>
+          <span>{course.total_classes ?? '–'} total</span>
         </div>
       </div>
 
       <button
-        className="btn btn-outline"
+        className="btn btn-outline btn-sm"
         style={{ width: '100%', marginTop: 'auto' }}
         onClick={() => onViewDetails(course)}
       >
-        <Info size={14} /> View Details
+        <Info size={13} /> View Details
       </button>
     </div>
   );

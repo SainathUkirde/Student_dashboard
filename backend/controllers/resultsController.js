@@ -1,8 +1,7 @@
 const { getDb } = require('../database/db');
 
-const db = getDb();
-
 function getStudentId() {
+  const db = getDb();
   const row = db.prepare('SELECT id FROM students ORDER BY id LIMIT 1').get();
   return row ? row.id : 1;
 }
@@ -10,6 +9,7 @@ function getStudentId() {
 // GET /api/results
 const getResults = (req, res) => {
   try {
+    const db = getDb();
     const studentId = getStudentId();
     const results = db.prepare(`
       SELECT r.*, c.course_name, c.abbreviation, c.course_code, c.course_type,
@@ -30,6 +30,7 @@ const getResults = (req, res) => {
 // GET /api/results/summary
 const getResultsSummary = (req, res) => {
   try {
+    const db = getDb();
     const studentId = getStudentId();
     const results = db.prepare(`
       SELECT r.grade_point, r.credits
@@ -58,6 +59,7 @@ const getResultsSummary = (req, res) => {
 // POST /api/results
 const upsertResult = (req, res) => {
   try {
+    const db = getDb();
     const { course_id, grade, grade_point, credits, result_status } = req.body;
     if (!course_id || !grade || grade_point == null || !credits) {
       return res.status(400).json({ error: 'course_id, grade, grade_point and credits are required' });

@@ -1,10 +1,9 @@
 const { getDb } = require('../database/db');
 
-const db = getDb();
-
 // GET /api/search?q=query
 const search = (req, res) => {
   try {
+    const db = getDb();
     const { q } = req.query;
     if (!q || q.trim().length < 2) {
       return res.json({ courses: [], teachers: [], student: null });

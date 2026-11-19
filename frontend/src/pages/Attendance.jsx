@@ -12,7 +12,7 @@ import { SkeletonStatCard, SkeletonCard } from '../components/LoadingSkeleton';
 import useFetch from '../hooks/useFetch';
 import { attendanceAPI } from '../services/api';
 
-const COLORS = ['#4f46e5', '#0891b2', '#16a34a', '#d97706', '#7c3aed'];
+const COLORS = ['#4338ca', '#0e7490', '#15803d', '#b45309', '#7c3aed'];
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload?.length) {
@@ -107,23 +107,30 @@ function Attendance() {
       </div>
 
       {/* Total Attendance Banner */}
-      <div className="card" style={{ marginBottom: 24 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
+      <div className="card" style={{ marginBottom: 24, padding: '20px 22px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <div style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Total Attendance
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
+              Overall Attendance
             </div>
-            <div style={{ fontSize: 32, fontWeight: 800, color: overall >= threshold ? 'var(--success-color)' : overall >= 65 ? 'var(--warning-color)' : 'var(--danger-color)', letterSpacing: '-0.03em' }}>
+            <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 36, fontWeight: 800, color: overall >= threshold ? 'var(--success-color)' : overall >= 65 ? 'var(--warning-color)' : 'var(--danger-color)', letterSpacing: '-0.04em', lineHeight: 1 }}>
               {overall}%
             </div>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Total Classes: {summary?.total_classes}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Attended: {summary?.total_attended}</div>
-            <div style={{ fontSize: 12, color: 'var(--danger-color)' }}>Missed: {summary?.total_missed}</div>
+          <div style={{ display: 'flex', gap: 20 }}>
+            {[
+              { label: 'Total', value: summary?.total_classes, color: 'var(--text-primary)' },
+              { label: 'Attended', value: summary?.total_attended, color: 'var(--success-color)' },
+              { label: 'Missed', value: summary?.total_missed, color: 'var(--danger-color)' },
+            ].map(item => (
+              <div key={item.label} style={{ textAlign: 'center' }}>
+                <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 20, fontWeight: 800, color: item.color, letterSpacing: '-0.02em', lineHeight: 1 }}>{item.value}</div>
+                <div style={{ fontSize: 10.5, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>{item.label}</div>
+              </div>
+            ))}
           </div>
         </div>
-        <ProgressBar value={overall} status={overall >= threshold ? 'good' : overall >= 65 ? 'warning' : 'critical'} height={12} />
+        <ProgressBar value={overall} status={overall >= threshold ? 'good' : overall >= 65 ? 'warning' : 'critical'} height={10} />
         {overall < threshold && (
           <div className="alert alert-warning" style={{ marginTop: 12, marginBottom: 0 }}>
             <AlertTriangle size={15} />
@@ -134,18 +141,28 @@ function Attendance() {
 
       {/* Course-Wise Details */}
       <div className="section-title">Course-wise Breakdown</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 24 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
         {attendance.map((a, idx) => (
           <div key={a.id} className="card" style={{ padding: '16px 20px' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
-              <div>
-                <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--text-primary)' }}>{a.course_name}</div>
-                <div style={{ fontSize: 12.5, color: 'var(--text-muted)', marginTop: 2 }}>{a.teacher_name}</div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, flexWrap: 'wrap', gap: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+                  background: COLORS[idx % COLORS.length] + '18',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 12, fontWeight: 800, color: COLORS[idx % COLORS.length]
+                }}>
+                  {a.abbreviation}
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontWeight: 700, fontSize: 14.5, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>{a.course_name}</div>
+                  <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginTop: 2 }}>{a.teacher_name}</div>
+                </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <StatusBadge status={a.status} />
                 <span style={{
-                  fontSize: 20, fontWeight: 800,
+                  fontFamily: 'Manrope, Inter, sans-serif', fontSize: 22, fontWeight: 800, letterSpacing: '-0.03em',
                   color: a.status === 'good' ? 'var(--success-color)' : a.status === 'warning' ? 'var(--warning-color)' : 'var(--danger-color)'
                 }}>
                   {a.attendance_percentage}%
@@ -153,28 +170,26 @@ function Attendance() {
               </div>
             </div>
 
-            <ProgressBar value={a.attendance_percentage} status={a.status} height={10} />
+            <ProgressBar value={a.attendance_percentage} status={a.status} height={9} />
 
-            <div style={{ display: 'flex', gap: 20, marginTop: 10, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 0, marginTop: 12, borderTop: '1px solid var(--border-light)', paddingTop: 12, flexWrap: 'wrap' }}>
               {[
-                { label: 'Total Classes', value: a.total_classes, color: 'var(--text-primary)' },
+                { label: 'Total', value: a.total_classes, color: 'var(--text-primary)' },
                 { label: 'Attended', value: a.classes_attended, color: 'var(--success-color)' },
                 { label: 'Missed', value: a.classes_missed, color: 'var(--danger-color)' },
+                {
+                  label: `To reach ${threshold}%`,
+                  value: a.attendance_percentage >= threshold
+                    ? '✓ OK'
+                    : `${Math.max(0, Math.ceil((threshold * a.total_classes / 100) - a.classes_attended))} more`,
+                  color: a.attendance_percentage >= threshold ? 'var(--success-color)' : 'var(--warning-color)'
+                },
               ].map(item => (
-                <div key={item.label} style={{ flex: 1, minWidth: 80 }}>
-                  <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.label}</div>
-                  <div style={{ fontSize: 17, fontWeight: 700, color: item.color, marginTop: 2 }}>{item.value}</div>
+                <div key={item.label} style={{ flex: 1, minWidth: 80, paddingRight: 12 }}>
+                  <div style={{ fontSize: 10.5, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{item.label}</div>
+                  <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 16, fontWeight: 800, color: item.color, marginTop: 3, letterSpacing: '-0.02em' }}>{item.value}</div>
                 </div>
               ))}
-              <div style={{ flex: 1, minWidth: 80 }}>
-                <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>To reach {threshold}%</div>
-                <div style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', marginTop: 2 }}>
-                  {a.attendance_percentage >= threshold
-                    ? '✓ OK'
-                    : `${Math.max(0, Math.ceil((threshold * a.total_classes / 100) - a.classes_attended))} more`
-                  }
-                </div>
-              </div>
             </div>
           </div>
         ))}

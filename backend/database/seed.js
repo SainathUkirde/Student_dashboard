@@ -29,20 +29,20 @@ settingsStmt.run('cgpa', '8.75', 'Cumulative GPA (demo value)');
 console.log('✅ Settings seeded');
 
 // Seed teachers
-const teacherStmt = db.prepare(`INSERT INTO teachers (name, abbreviation, designation, department) VALUES (?, ?, ?, ?)`);
+const teacherStmt = db.prepare(`INSERT INTO teachers (name, abbreviation, designation, department, linkedin_url) VALUES (?, ?, ?, ?, ?)`);
 const teachers = [
-  { name: 'Aparna Kulkarni', abbr: 'AK', designation: 'Assistant Professor', dept: 'Computer Science' },
-  { name: 'Ritu Dudhmal', abbr: 'RD', designation: 'Assistant Professor', dept: 'Computer Science' },
-  { name: 'Pankaj Vishwakarma', abbr: 'PV', designation: 'Assistant Professor', dept: 'Computer Science' },
-  { name: 'Vaishali Wangikar', abbr: 'VW', designation: 'Assistant Professor', dept: 'Computer Science' },
-  { name: 'Sayali Kalbhor', abbr: 'SK', designation: 'Assistant Professor', dept: 'Computer Science' },
-  { name: 'Laxmi Kale', abbr: 'LK', designation: 'Assistant Professor', dept: 'Computer Science' },
-  { name: 'S. Bidkar', abbr: 'SB', designation: 'Assistant Professor', dept: 'Computer Science' },
-  { name: 'A. Joshi', abbr: 'AJ', designation: 'Assistant Professor', dept: 'Computer Science' },
+  { name: 'Aparna Kulkarni', abbr: 'AK', designation: 'Assistant Professor', dept: 'Computer Science', linkedin: 'https://www.linkedin.com/in/aparna-kulkarni-73a50521/' },
+  { name: 'Ritu Dudhmal', abbr: 'RD', designation: 'Assistant Professor', dept: 'Computer Science', linkedin: 'https://www.linkedin.com/in/ritu-dudhmal-6733ab32a/' },
+  { name: 'Pankaj Vishwakarma', abbr: 'PV', designation: 'Assistant Professor', dept: 'Computer Science', linkedin: 'https://www.linkedin.com/in/pankaj-kumar-vishwakarma-991541207/' },
+  { name: 'Vaishali Wangikar', abbr: 'VW', designation: 'Assistant Professor', dept: 'Computer Science', linkedin: 'https://www.linkedin.com/in/dr-vaishali-wangikar-8a31a219/' },
+  { name: 'Sayali Kalbhor', abbr: 'SK', designation: 'Assistant Professor', dept: 'Computer Science', linkedin: 'https://www.linkedin.com/in/sayali-kalbhor-92196b109/' },
+  { name: 'Laxmi Kale', abbr: 'LK', designation: 'Assistant Professor', dept: 'Computer Science', linkedin: null },
+  { name: 'S. Bidkar', abbr: 'SB', designation: 'Assistant Professor', dept: 'Computer Science', linkedin: null },
+  { name: 'A. Joshi', abbr: 'AJ', designation: 'Assistant Professor', dept: 'Computer Science', linkedin: null },
 ];
 const teacherIds = {};
 teachers.forEach(t => {
-  const result = teacherStmt.run(t.name, t.abbr, t.designation, t.dept);
+  const result = teacherStmt.run(t.name, t.abbr, t.designation, t.dept, t.linkedin);
   teacherIds[t.abbr] = result.lastInsertRowid;
 });
 console.log('✅ Teachers seeded');
@@ -64,7 +64,7 @@ courses.forEach(c => {
 console.log('✅ Courses seeded');
 
 // Seed student
-const studentStmt = db.prepare(`INSERT INTO students (name, prn, roll_no, batch, branch, year, address, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+const studentStmt = db.prepare(`INSERT INTO students (name, prn, roll_no, batch, branch, year, address, email, phone, linkedin_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 const studentResult = studentStmt.run(
   'Sainath Ukirde',
   '202401120011',
@@ -74,7 +74,8 @@ const studentResult = studentStmt.run(
   '3rd Year',
   'Vasundhara Society, Flat No. A-502, Dudlgaon, Moshi',
   'sainath.ukirde@student.edu',
-  '+91 9876543210'
+  '+91 9876543210',
+  'https://www.linkedin.com/in/sainath-ukirde-07463a373/'
 );
 const studentId = studentResult.lastInsertRowid;
 console.log('✅ Student seeded');

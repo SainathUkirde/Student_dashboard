@@ -1,21 +1,19 @@
 services:
-  # ---------- Backend ----------
   - type: web
     name: student-dashboard-backend
     env: node
     plan: free
+    rootDir: backend
     buildCommand: npm ci
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
-    # Add any other secrets (DB path, JWT secret, etc.) here.
-
-  # ---------- Frontend ----------
-  - type: static
-    name: student-dashboard-frontend
-    staticPublishPath: frontend/dist
-    buildCommand: |
-      cd frontend && npm ci && npm run build
-    # No startCommand for static sites
-
+      - key: PORT
+        value: 5000
+      - key: DB_PATH
+        value: ./database/student_dashboard.db
+      # Set CORS_ORIGIN to your Vercel frontend URL after deploying, e.g.:
+      # https://student-dashboard-xyz.vercel.app
+      - key: CORS_ORIGIN
+        sync: false

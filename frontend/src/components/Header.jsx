@@ -4,6 +4,31 @@ import { Sun, Moon, Bell, Search, Menu, ChevronDown, User, Settings, LogOut } fr
 import { useTheme } from '../App';
 import { searchAPI } from '../services/api';
 
+function StudentAvatar() {
+  const [failed, setFailed] = useState(false);
+  if (failed) return <div className="user-avatar" aria-hidden="true">SU</div>;
+  return (
+    <div className="user-avatar" aria-hidden="true" style={{ overflow: 'hidden', position: 'relative', fontSize: 0 }}>
+      <img
+        src="/student-photo/sainath-ukirde.jpg"
+        alt="Sainath Ukirde"
+        onError={() => setFailed(true)}
+        style={{
+          position: 'absolute',
+          width: '180%',
+          height: '180%',
+          objectFit: 'cover',
+          objectPosition: 'center 28%',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          display: 'block',
+        }}
+      />
+    </div>
+  );
+}
+
 function Header({ pageTitle, onMobileMenuToggle }) {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -169,7 +194,7 @@ function Header({ pageTitle, onMobileMenuToggle }) {
             aria-label="User menu"
             aria-expanded={dropdownOpen}
           >
-            <div className="user-avatar" aria-hidden="true">SU</div>
+            <StudentAvatar />
             <span className="user-name">Sainath Ukirde</span>
             <ChevronDown size={13} color="var(--text-muted)" />
           </button>

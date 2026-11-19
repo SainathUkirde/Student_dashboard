@@ -110,6 +110,26 @@ function initializeSchema() {
     );
   `);
 
+  // ── Optional migrations (idempotent) ─────────────────────────
+  try { db.exec(`ALTER TABLE teachers ADD COLUMN photo_url TEXT`); } catch (_) { /* already exists */ }
+  try { db.exec(`ALTER TABLE teachers ADD COLUMN linkedin_url TEXT`); } catch (_) { /* already exists */ }
+  try { db.exec(`ALTER TABLE students ADD COLUMN linkedin_url TEXT`); } catch (_) { /* already exists */ }
+
+  // Backfill student LinkedIn URL for existing rows that have no value yet
+  db.prepare(`UPDATE students SET linkedin_url = ? WHERE name = ? AND (linkedin_url IS NULL OR linkedin_url = '')`)
+    .run('https://www.linkedin.com/in/sainath-ukirde-07463a373/', 'Sainath Ukirde');
+
+  // Backfill LinkedIn URLs for existing rows that have no value yet
+  const linkedinData = [
+    { name: 'Aparna Kulkarni',    url: 'https://www.linkedin.com/in/aparna-kulkarni-73a50521/' },
+    { name: 'Ritu Dudhmal',       url: 'https://www.linkedin.com/in/ritu-dudhmal-6733ab32a/' },
+    { name: 'Pankaj Vishwakarma', url: 'https://www.linkedin.com/in/pankaj-kumar-vishwakarma-991541207/' },
+    { name: 'Vaishali Wangikar',  url: 'https://www.linkedin.com/in/dr-vaishali-wangikar-8a31a219/' },
+    { name: 'Sayali Kalbhor',     url: 'https://www.linkedin.com/in/sayali-kalbhor-92196b109/' },
+  ];
+  const backfillStmt = db.prepare(`UPDATE teachers SET linkedin_url = ? WHERE name = ? AND (linkedin_url IS NULL OR linkedin_url = '')`);
+  linkedinData.forEach(({ name, url }) => backfillStmt.run(url, name));
+
   // ── Quiz & Practice Zone ─────────────────────────────────────
   db.exec(`
     CREATE TABLE IF NOT EXISTS quiz_questions (

@@ -1,10 +1,9 @@
 const { getDb } = require('../database/db');
 
-const db = getDb();
-
 // GET /api/teachers
 const getTeachers = (req, res) => {
   try {
+    const db = getDb();
     const teachers = db.prepare(`
       SELECT t.*, GROUP_CONCAT(c.course_name, ' | ') as courses,
              GROUP_CONCAT(c.id, ',') as course_ids

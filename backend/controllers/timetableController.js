@@ -1,10 +1,9 @@
 const { getDb } = require('../database/db');
 
-const db = getDb();
-
 // GET /api/timetable
 const getTimetable = (req, res) => {
   try {
+    const db = getDb();
     const entries = db.prepare(`
       SELECT * FROM timetable
       ORDER BY
@@ -38,6 +37,7 @@ const getTimetable = (req, res) => {
 // GET /api/timetable/today
 const getTodayTimetable = (req, res) => {
   try {
+    const db = getDb();
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const today = days[new Date().getDay()];
     const entries = db.prepare(

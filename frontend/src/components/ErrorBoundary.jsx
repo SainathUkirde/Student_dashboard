@@ -34,13 +34,13 @@ class ErrorBoundary extends React.Component {
             {this.state.error?.message || 'An unexpected error occurred while rendering this page.'}
           </p>
           <button
-            onClick={() => { this.setState({ hasError: false, error: null }); window.location.href = '/quiz'; }}
+            onClick={() => { this.setState({ hasError: false, error: null }); window.location.href = '/dashboard'; }}
             style={{
               padding: '10px 20px', background: '#4f46e5', color: 'white',
               border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600,
             }}
           >
-            Go back to Quiz
+            Go to Dashboard
           </button>
         </div>
       );

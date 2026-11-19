@@ -1,10 +1,9 @@
 const { getDb } = require('../database/db');
 
-const db = getDb();
-
 // GET /api/student
 const getStudent = (req, res) => {
   try {
+    const db = getDb();
     const student = db.prepare('SELECT * FROM students LIMIT 1').get();
     if (!student) return res.status(404).json({ error: 'Student not found' });
     res.json(student);
@@ -16,6 +15,7 @@ const getStudent = (req, res) => {
 // PUT /api/student/:id
 const updateStudent = (req, res) => {
   try {
+    const db = getDb();
     const { id } = req.params;
     const { name, prn, roll_no, batch, branch, year, address, email, phone } = req.body;
 

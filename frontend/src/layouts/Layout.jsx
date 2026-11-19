@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import { ToastContainer } from '../components/Toast';
+import ErrorBoundary from '../components/ErrorBoundary';
 import useToast from '../hooks/useToast';
 
 const PAGE_TITLES = {
@@ -42,8 +43,17 @@ function Layout() {
             onMobileMenuToggle={() => setMobileOpen(m => !m)}
           />
 
-          <main className="page-content">
-            <Outlet />
+          <main
+            className={`page-content ${location.pathname === '/dashboard' ? 'page-content-dashboard' : ''}`}
+          >
+            {location.pathname === '/dashboard' && (
+              <div className="dashboard-bg-overlay" />
+            )}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <ErrorBoundary>
+                <Outlet />
+              </ErrorBoundary>
+            </div>
           </main>
 
           <footer className="footer">

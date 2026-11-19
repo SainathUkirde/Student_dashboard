@@ -1,7 +1,14 @@
 import axios from 'axios';
 
+// In production (Vercel), VITE_API_URL is set to the Render backend URL
+// e.g. https://student-dashboard-backend.onrender.com
+// In development the Vite proxy forwards /api → localhost:5000, so baseURL stays '/api'
+const BASE_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: BASE_URL,
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' }
 });

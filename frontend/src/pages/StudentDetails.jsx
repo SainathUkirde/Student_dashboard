@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { User, Edit2, Save, X, MapPin, Hash, Building, Calendar, Phone, Mail } from 'lucide-react';
+import { User, Edit2, Save, X, MapPin, Hash, Building, Calendar, Phone, Mail, Linkedin } from 'lucide-react';
 import Modal from '../components/Modal';
 import { SkeletonCard } from '../components/LoadingSkeleton';
 import ErrorState from '../components/ErrorState';
@@ -120,6 +120,7 @@ function EditProfileModal({ student, onClose, onSave }) {
 
 function StudentDetails() {
   const [editOpen, setEditOpen] = useState(false);
+  const [studentImgFailed, setStudentImgFailed] = useState(false);
   const { data: student, loading, error, refetch } = useFetch(studentAPI.get);
   const toast = useContext(ToastCtx);
 
@@ -154,41 +155,79 @@ function StudentDetails() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '290px 1fr', gap: 20 }}>
         {/* Profile Card */}
         <div>
-          <div className="card" style={{ textAlign: 'center', padding: '28px 20px' }}>
+          <div className="card" style={{ textAlign: 'center', padding: '28px 18px' }}>
+            {/* Student photo avatar */}
             <div style={{
-              width: 90, height: 90, borderRadius: '50%',
-              background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+              width: 88, height: 88, borderRadius: '50%',
+              background: 'linear-gradient(135deg, #4338ca 0%, #7c3aed 100%)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              margin: '0 auto 16px', fontSize: 28, fontWeight: 800, color: '#fff',
-              boxShadow: '0 4px 16px rgba(79,70,229,0.3)'
+              margin: '0 auto 16px',
+              fontFamily: 'Manrope, Inter, sans-serif',
+              fontSize: 26, fontWeight: 800, color: '#fff',
+              boxShadow: '0 6px 24px rgba(67,56,202,0.28)',
+              border: '3px solid var(--accent-primary-light)',
+              overflow: 'hidden',
+              position: 'relative',
             }}>
-              {initials}
+              {!studentImgFailed ? (
+                <img
+                  src="/student-photo/sainath-ukirde.jpg"
+                  alt="Sainath Ukirde"
+                  onError={() => setStudentImgFailed(true)}
+                  style={{
+                    position: 'absolute',
+                    width: '180%',
+                    height: '180%',
+                    objectFit: 'cover',
+                    objectPosition: 'center 28%',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    display: 'block',
+                  }}
+                />
+              ) : initials}
             </div>
-            <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 4 }}>
+            <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 17, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 3, letterSpacing: '-0.02em' }}>
               {student?.name}
             </div>
-            <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 12 }}>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
               Roll No. {student?.roll_no}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <span className="badge badge-accent" style={{ justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              <span className="badge badge-accent" style={{ justifyContent: 'center', fontSize: 11.5 }}>
                 {student?.branch}
               </span>
-              <span className="badge badge-info" style={{ justifyContent: 'center' }}>
+              <span className="badge badge-info" style={{ justifyContent: 'center', fontSize: 11.5 }}>
                 {student?.year}
               </span>
-              <span className="badge badge-success" style={{ justifyContent: 'center' }}>
+              <span className="badge badge-success" style={{ justifyContent: 'center', fontSize: 11.5 }}>
                 Batch {student?.batch}
               </span>
             </div>
+            {student?.linkedin_url && (
+              <a
+                href={student.linkedin_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  marginTop: 14, fontSize: 12.5, fontWeight: 600,
+                  color: '#0a66c2', textDecoration: 'none',
+                }}
+              >
+                <Linkedin size={13} />
+                LinkedIn
+              </a>
+            )}
           </div>
 
           {/* Academic Quick Info */}
-          <div className="card" style={{ marginTop: 16 }}>
-            <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-primary)', marginBottom: 12 }}>
+          <div className="card" style={{ marginTop: 14 }}>
+            <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontWeight: 800, fontSize: 13, color: 'var(--text-primary)', marginBottom: 12, letterSpacing: '-0.01em' }}>
               Academic Info
             </div>
             {[
@@ -197,7 +236,7 @@ function StudentDetails() {
               { label: 'Division', value: 'A' },
               { label: 'Class Coordinator', value: 'Aparna Kulkarni' },
             ].map(item => (
-              <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--border-light)', fontSize: 13 }}>
+              <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '7px 0', borderBottom: '1px solid var(--border-light)', fontSize: 12.5 }}>
                 <span style={{ color: 'var(--text-muted)' }}>{item.label}</span>
                 <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{item.value}</span>
               </div>
@@ -207,8 +246,8 @@ function StudentDetails() {
 
         {/* Details Panel */}
         <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)' }}>Personal Information</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 15.5, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>Personal Information</div>
             <button className="btn btn-secondary btn-sm" onClick={() => setEditOpen(true)}>
               <Edit2 size={12} /> Edit
             </button>

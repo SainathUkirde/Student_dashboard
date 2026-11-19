@@ -11,8 +11,8 @@ import useFetch from '../hooks/useFetch';
 import { resultsAPI } from '../services/api';
 
 const GRADE_COLORS = {
-  'A+': '#16a34a', 'A': '#4f46e5', 'B+': '#0891b2',
-  'B': '#d97706', 'C': '#e11d48', 'F': '#dc2626'
+  'A+': '#15803d', 'A': '#4338ca', 'B+': '#0e7490',
+  'B': '#b45309', 'C': '#be185d', 'F': '#b91c1c'
 };
 
 function GradePill({ grade }) {
@@ -206,21 +206,22 @@ function Results() {
       {/* SGPA/CGPA Card */}
       <div className="grid-2">
         {[
-          { label: 'SGPA', value: summary?.sgpa, desc: 'Semester 5 Grade Point Average' },
-          { label: 'CGPA', value: summary?.cgpa, desc: 'Cumulative Grade Point Average' },
+          { label: 'SGPA', value: summary?.sgpa, desc: 'Semester 5 Grade Point Average', grad: 'linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%)', border: '#c7d2fe' },
+          { label: 'CGPA', value: summary?.cgpa, desc: 'Cumulative Grade Point Average', grad: 'linear-gradient(135deg, #f0fdf4 0%, #ecfeff 100%)', border: '#86efac' },
         ].map(item => (
           <div key={item.label} className="card" style={{
-            textAlign: 'center', padding: '24px 20px',
-            background: 'linear-gradient(135deg, var(--accent-primary-light), var(--bg-secondary))'
+            textAlign: 'center', padding: '28px 20px',
+            background: item.grad,
+            border: `1.5px solid ${item.border}`,
           }}>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
+            <div style={{ fontSize: 10.5, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.09em', marginBottom: 10 }}>
               {item.label}
             </div>
-            <div style={{ fontSize: 44, fontWeight: 800, color: 'var(--accent-primary)', letterSpacing: '-0.04em', lineHeight: 1 }}>
+            <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 48, fontWeight: 800, color: 'var(--accent-primary)', letterSpacing: '-0.05em', lineHeight: 1 }}>
               {item.value?.toFixed(2) ?? '–'}
             </div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>{item.desc}</div>
-            <div className="badge badge-warning" style={{ marginTop: 8 }}>Sample Data</div>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 10, lineHeight: 1.5 }}>{item.desc}</div>
+            <div className="badge badge-warning" style={{ marginTop: 10 }}>Sample Data</div>
           </div>
         ))}
       </div>

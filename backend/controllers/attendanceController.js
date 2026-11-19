@@ -1,8 +1,7 @@
 const { getDb } = require('../database/db');
 
-const db = getDb();
-
 function getStudentId() {
+  const db = getDb();
   const row = db.prepare('SELECT id FROM students ORDER BY id LIMIT 1').get();
   return row ? row.id : 1;
 }
@@ -10,6 +9,7 @@ function getStudentId() {
 // GET /api/attendance
 const getAttendance = (req, res) => {
   try {
+    const db = getDb();
     const studentId = getStudentId();
     const threshold = Number(
       (db.prepare("SELECT value FROM settings WHERE key='attendance_threshold'").get() || {}).value || 75
@@ -46,6 +46,7 @@ const getAttendance = (req, res) => {
 // GET /api/attendance/summary
 const getAttendanceSummary = (req, res) => {
   try {
+    const db = getDb();
     const studentId = getStudentId();
     const records = db.prepare(`
       SELECT a.total_classes, a.classes_attended,
@@ -79,6 +80,7 @@ const getAttendanceSummary = (req, res) => {
 // POST /api/attendance
 const updateAttendance = (req, res) => {
   try {
+    const db = getDb();
     const { course_id, total_classes, classes_attended } = req.body;
     if (!course_id || total_classes == null || classes_attended == null) {
       return res.status(400).json({ error: 'course_id, total_classes, and classes_attended are required' });

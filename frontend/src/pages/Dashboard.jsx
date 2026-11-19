@@ -16,15 +16,15 @@ import useFetch from '../hooks/useFetch';
 import { attendanceAPI, resultsAPI, studentAPI, coursesAPI } from '../services/api';
 
 const QUICK_LINKS = [
-  { to: '/courses', icon: BookOpen, label: 'Courses', color: '#4f46e5', bg: '#eef2ff' },
-  { to: '/attendance', icon: BarChart2, label: 'Attendance', color: '#0891b2', bg: '#ecfeff' },
-  { to: '/results', icon: Award, label: 'Results', color: '#16a34a', bg: '#f0fdf4' },
-  { to: '/timetable', icon: Calendar, label: 'Timetable', color: '#d97706', bg: '#fffbeb' },
+  { to: '/courses', icon: BookOpen, label: 'Courses', color: '#4338ca', bg: '#eef2ff' },
+  { to: '/attendance', icon: BarChart2, label: 'Attendance', color: '#0e7490', bg: '#ecfeff' },
+  { to: '/results', icon: Award, label: 'Results', color: '#15803d', bg: '#f0fdf4' },
+  { to: '/timetable', icon: Calendar, label: 'Timetable', color: '#b45309', bg: '#fffbeb' },
   { to: '/teachers', icon: Users, label: 'Teachers', color: '#7c3aed', bg: '#f5f3ff' },
-  { to: '/student-details', icon: User, label: 'My Profile', color: '#e11d48', bg: '#fff1f2' },
+  { to: '/student-details', icon: User, label: 'My Profile', color: '#be185d', bg: '#fdf2f8' },
 ];
 
-const ATTENDANCE_COLORS = ['#4f46e5', '#0891b2', '#16a34a', '#d97706', '#7c3aed'];
+const ATTENDANCE_COLORS = ['#4338ca', '#0e7490', '#15803d', '#b45309', '#7c3aed'];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload?.length) {
@@ -61,28 +61,79 @@ function Dashboard() {
   return (
     <div>
       {/* Welcome Banner */}
-      <div className="card" style={{
-        background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 60%, #0891b2 100%)',
-        border: 'none', color: 'white', marginBottom: 24, padding: '24px 28px'
+      <div style={{
+        backgroundImage: `linear-gradient(135deg, rgba(10, 16, 35, 0.58) 0%, rgba(25, 20, 65, 0.50) 45%, rgba(10, 16, 35, 0.62) 100%), url('/college.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: 16,
+        color: 'white',
+        marginBottom: 24,
+        padding: '26px 28px',
+        boxShadow: '0 12px 36px rgba(15, 23, 42, 0.35)',
+        position: 'relative',
+        overflow: 'hidden',
+        border: '1px solid rgba(255, 255, 255, 0.14)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+        {/* decorative circle */}
+        <div style={{
+          position: 'absolute', right: -40, top: -40,
+          width: 240, height: 240, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%)',
+          pointerEvents: 'none'
+        }} />
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14, position: 'relative' }}>
           <div>
-            <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6, letterSpacing: '-0.02em' }}>
-              Welcome back, {sLoad ? 'Student' : student?.name?.split(' ')[0] || 'Sainath'} 👋
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 7,
+              background: 'rgba(255, 255, 255, 0.12)', backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 20,
+              padding: '3px 11px', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em',
+              textTransform: 'uppercase', marginBottom: 10
+            }}>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#fbbf24', boxShadow: '0 0 8px #fbbf24' }} />
+              MIT Academy of Engineering
+            </div>
+            <h2 style={{ fontSize: 25, fontWeight: 800, marginBottom: 6, letterSpacing: '-0.025em', fontFamily: 'Manrope, Inter, sans-serif', lineHeight: 1.2, textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>
+              {sLoad ? 'Welcome back' : `Welcome back, ${student?.name?.split(' ')[0] || 'Sainath'}!`}
             </h2>
-            <p style={{ opacity: 0.85, fontSize: 14 }}>
-              TY B.Tech Data Science &nbsp;•&nbsp; Division A1 &nbsp;•&nbsp; Semester 5
+            <p style={{ opacity: 0.95, fontSize: 13.5, textShadow: '0 1px 6px rgba(0,0,0,0.65)' }}>
+              TY B.Tech Data Science &nbsp;·&nbsp; Division A1 &nbsp;·&nbsp; Semester 5
             </p>
-            <p style={{ opacity: 0.6, fontSize: 12.5, marginTop: 4 }}>{today}</p>
+            <p style={{ opacity: 0.85, fontSize: 12, marginTop: 4, textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>{today}</p>
           </div>
+
           <div style={{
-            background: 'rgba(255,255,255,0.15)', borderRadius: 12, padding: '12px 18px',
-            textAlign: 'center', backdropFilter: 'blur(4px)'
+            background: 'rgba(255, 255, 255, 0.12)', borderRadius: 14, padding: '14px 22px',
+            textAlign: 'center', backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.22)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)'
           }}>
-            <div style={{ fontWeight: 800, fontSize: 26, lineHeight: 1 }}>
+            <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontWeight: 800, fontSize: 32, lineHeight: 1, letterSpacing: '-0.04em', color: '#ffffff' }}>
               {rLoad ? '–' : resultSummary?.sgpa ?? '–'}
             </div>
-            <div style={{ fontSize: 11, opacity: 0.8, marginTop: 4 }}>Current SGPA</div>
+            <div style={{ fontSize: 11, opacity: 0.8, marginTop: 5, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Current SGPA</div>
+          </div>
+        </div>
+
+        {/* Highlight footer bar in banner similar to MIT placement highlight */}
+        <div style={{
+          marginTop: 18,
+          paddingTop: 13,
+          borderTop: '1px solid rgba(255, 255, 255, 0.14)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 10,
+          fontSize: 12.5,
+          color: 'rgba(255, 255, 255, 0.92)'
+        }}>
+          <div>
+            <strong style={{ color: '#fbbf24', fontSize: 13.5, fontWeight: 800 }}>503+</strong> Placement Offers &nbsp;•&nbsp; <strong style={{ color: '#fbbf24', fontSize: 13.5, fontWeight: 800 }}>450+</strong> Recruiting Companies
+          </div>
+          <div style={{ fontSize: 11.5, opacity: 0.7 }}>
+            Academic Year 2026–2027
           </div>
         </div>
       </div>
@@ -197,31 +248,38 @@ function Dashboard() {
 
       {/* Quick Links */}
       <div className="section-title">Quick Access</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(136px, 1fr))', gap: 12 }}>
         {QUICK_LINKS.map(link => (
           <button
             key={link.to}
-            className="card card-interactive"
             style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
-              padding: '18px 12px', cursor: 'pointer', border: 'none', textDecoration: 'none',
-              background: 'var(--bg-secondary)'
+              padding: '18px 12px', cursor: 'pointer',
+              background: 'var(--bg-secondary)',
+              border: '1.5px solid var(--border-color)',
+              borderRadius: 14,
+              boxShadow: 'var(--shadow-sm)',
+              transition: 'all 0.18s cubic-bezier(0.4,0,0.2,1)',
+              textDecoration: 'none',
             }}
             onClick={() => navigate(link.to)}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = 'var(--shadow-md)'; e.currentTarget.style.borderColor = link.color + '50'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.borderColor = 'var(--border-color)'; }}
           >
             <div style={{
               width: 44, height: 44, borderRadius: 12, background: link.bg,
-              display: 'flex', alignItems: 'center', justifyContent: 'center'
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'transform 0.18s ease',
             }}>
               <link.icon size={20} color={link.color} />
             </div>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>{link.label}</span>
+            <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-secondary)' }}>{link.label}</span>
           </button>
         ))}
       </div>
 
       {/* Academic Info Row */}
-      <div className="grid-3" style={{ marginTop: 24 }}>
+      <div className="grid-3" style={{ marginTop: 22 }}>
         {[
           { label: 'Name', value: student?.name || 'Sainath Ukirde' },
           { label: 'PRN', value: student?.prn || '202401120011' },
@@ -230,11 +288,11 @@ function Dashboard() {
           { label: 'Batch', value: student?.batch || 'A-1' },
           { label: 'Year', value: student?.year || '3rd Year' },
         ].map(info => (
-          <div key={info.label} className="card" style={{ padding: '14px 18px' }}>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <div key={info.label} className="card" style={{ padding: '13px 16px' }}>
+            <div style={{ fontSize: 10.5, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               {info.label}
             </div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', marginTop: 4 }}>
+            <div style={{ fontFamily: 'Manrope, Inter, sans-serif', fontSize: 14.5, fontWeight: 700, color: 'var(--text-primary)', marginTop: 4, letterSpacing: '-0.01em' }}>
               {sLoad ? <span className="skeleton" style={{ display: 'block', height: 16, width: '70%' }} /> : info.value}
             </div>
           </div>
